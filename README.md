@@ -4,6 +4,13 @@ Role Review Matrix is a Codex skill family for professional multi-role review ac
 
 The repository is the source of truth. Installed Codex skills are synchronized from this repository into `~/.codex/skills`.
 
+## Use Cases
+
+- Review product ideas, PRDs, architecture briefs, implementation diffs, test plans, launch plans, incident reviews, and GTM strategy.
+- Select role reviewers dynamically from lifecycle stage and risk signals.
+- Combine product, business, UX, engineering, AI-native, security, privacy, performance, reliability, legal, pricing, and market perspectives.
+- Keep role experience in `memory.md` while stable role rules stay in `SKILL.md`.
+
 ## What It Provides
 
 - `role-review-matrix`: the orchestration skill for stage-aware review.
@@ -13,8 +20,6 @@ The repository is the source of truth. Installed Codex skills are synchronized f
 - Validation and sync scripts.
 
 ## Quick Start
-
-During staged development, validation and sync become fully usable after the skill source tree has been generated. Until then, validation may fail on the next missing planned file and sync may report missing source skill directories.
 
 Validate the repository:
 
@@ -33,6 +38,27 @@ Install or update skills:
 ```bash
 ./scripts/sync_to_codex_skills.sh
 ```
+
+After installing, open a new Codex session so the skills can be discovered.
+
+## Example Invocation
+
+```text
+Use role-review-matrix to review this PRD before implementation.
+```
+
+The matrix will infer the lifecycle stage, read relevant context, select roles, and produce a combined review with:
+
+- Executive summary.
+- `pass`, `revise`, or `blocked` gate decision.
+- Highest-risk findings.
+- Role-specific findings.
+- Cross-role conflicts.
+- Required actions.
+- Candidate missing roles.
+- Role evolution notes.
+
+See [`examples/`](examples/) for sample inputs and outputs.
 
 ## Installation
 
@@ -66,10 +92,15 @@ Only sync installed memory back after reviewing it. Candidate improvements shoul
 - Missing roles are first represented as temporary role views.
 - `role-creator` drafts new role skills; it does not install them without confirmation.
 - External web research is not performed unless the user explicitly asks for it.
+- Do not include secrets, `.env` contents, private customer data, or proprietary artifacts in issues, examples, or memory files.
 
 ## Repository Layout
 
 ```text
+.github/
+  workflows/
+  ISSUE_TEMPLATE/
+examples/
 skills/
   role-review-matrix/
   role-creator/
@@ -78,7 +109,8 @@ scripts/
 docs/
   superpowers/
     specs/
-    plans/
+  role-authoring.md
+  memory-model.md
 ```
 
 ## Verification
@@ -93,3 +125,15 @@ python3 scripts/validate_skill_family.py
 After installing, restart Codex or open a new Codex session so newly installed skills can be discovered.
 
 To keep local role experience, do not pass `--overwrite-memory`.
+
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md). New role proposals should explain why existing roles are not enough and include lifecycle stages, evidence needs, and likely conflicts.
+
+## Security
+
+See [`SECURITY.md`](SECURITY.md). Do not disclose sensitive exploit details, credentials, customer data, or proprietary artifacts in public issues.
+
+## License
+
+MIT. See [`LICENSE`](LICENSE).

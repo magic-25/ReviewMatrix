@@ -1,0 +1,30 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile scripts
+        run: python3 -m py_compile scripts/generate_roles.py scripts/validate_skill_family.py
+
+      - name: Validate skill family
+        run: python3 scripts/validate_skill_family.py
+
+      - name: Check generated roles are current
+        run: |
+          python3 scripts/generate_roles.py
+          git diff --exit-code
